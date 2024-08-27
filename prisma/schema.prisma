@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model Article {
+//   /// Multiple data types found: String: 50%, String (ObjectId): 50% out of 2 sampled entries
+//   id          String     @id @map("_id")
+//   body        String
+//   createdAt   DateTime @db.Date
+//   description String
+//   published   Boolean
+//   title       String   @unique
+//   updatedAt   DateTime @db.Date
+// }
+
+model Article {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String?
+  body        String
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Comment {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  comment String
+  postId  String @db.ObjectId
+}
+
+model Post {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  authorId String @db.ObjectId
+  body     String
+  slug     String @unique
+  title    String
+}
+
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  name  String
+}
