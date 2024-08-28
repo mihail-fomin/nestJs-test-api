@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -30,8 +30,15 @@ export class ArticlesController {
 
   @Get(':id')
   @ApiOkResponse({ type: ArticleEntity })
-  findOne(@Param('id') id: string) {
-    return this.articlesService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const article = await this.articlesService.findOne(id);
+    console.log('article: ', article);
+    
+    if (!article) {
+        throw new NotFoundException(`Article with id ${id} not found.`);
+    }
+
+    return article
   }
 
   @Patch(':id')
