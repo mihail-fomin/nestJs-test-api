@@ -81,11 +81,11 @@ async function main() {
 }
   
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
+  .then(async () => {
+    await prisma.$disconnect()
   })
-  .finally(async () => {
-    // close Prisma Client at the end
-    await prisma.$disconnect();
-  });
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
