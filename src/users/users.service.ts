@@ -40,6 +40,10 @@ export class UsersService {
       );
     }
 
+    return this.prisma.user.update({
+        where: { id },
+        data: updateUserDto,
+    });
   }
 
   remove(id: string) {
