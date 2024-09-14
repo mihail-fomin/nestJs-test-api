@@ -16,7 +16,10 @@ export class ArticlesService {
   }
 
   findAll() {
-    return this.prisma.article.findMany({ where: { published: true } });
+    return this.prisma.article.findMany({
+        where: { published: true },
+        include: { author: true },
+    })
   }
 
   findOne(id: string) {
@@ -25,7 +28,8 @@ export class ArticlesService {
         include: {
           author: true,
         },
-    });  }
+    }); 
+  }
 
   update(id: string, updateArticleDto: UpdateArticleDto) {
     return this.prisma.article.update({

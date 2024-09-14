@@ -31,4 +31,14 @@ export class CreateArticleDto {
   @IsOptional()
   @ApiProperty({ required: false, default: false })
   published?: boolean = false;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  thumbnailUrl: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  videoUrl: string;
 }

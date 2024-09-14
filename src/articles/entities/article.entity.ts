@@ -23,6 +23,12 @@ export class ArticleEntity implements Article {
 
   @ApiProperty()
   updatedAt: Date;
+  
+  @ApiProperty({ required: false, nullable: true })
+  thumbnailUrl: string;
+  
+  @ApiProperty({ required: false, nullable: true })
+  videoUrl: string;
 
   @ApiProperty({ required: false, nullable: true })
   authorId: string | null;
