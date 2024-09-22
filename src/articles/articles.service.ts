@@ -17,7 +17,6 @@ export class ArticlesService {
 
   findAll() {
     return this.prisma.article.findMany({
-        where: { published: true },
         include: { author: true },
     })
   }
@@ -29,6 +28,13 @@ export class ArticlesService {
           author: true,
         },
     }); 
+  }
+
+  findFiveLatest() {
+    return this.prisma.article.findMany({
+        orderBy: { createdAt: 'desc'},
+        take: 5,
+    })
   }
 
   update(id: string, updateArticleDto: UpdateArticleDto) {

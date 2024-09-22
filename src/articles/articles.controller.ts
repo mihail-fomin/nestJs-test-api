@@ -32,6 +32,13 @@ import {
       const articles = await this.articlesService.findAll();
       return articles.map((article) => new ArticleEntity(article));
     }
+
+    @Get('latest')
+    @ApiOkResponse({ type: ArticleEntity, isArray: true })
+    async findFiveLatest() {
+      const articles = await this.articlesService.findFiveLatest();
+      return articles.map((article) => new ArticleEntity(article));
+    }
   
     @Get('drafts')
     @ApiOkResponse({ type: ArticleEntity, isArray: true })
