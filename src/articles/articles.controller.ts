@@ -6,12 +6,14 @@ import {
     Patch,
     Param,
     Delete,
+    UseGuards,
   } from '@nestjs/common';
   import { ArticlesService } from './articles.service';
   import { CreateArticleDto } from './dto/create-article.dto';
   import { UpdateArticleDto } from './dto/update-article.dto';
   import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
   import { ArticleEntity } from './entities/article.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
   
   @Controller('articles')
   @ApiTags('articles')
@@ -19,6 +21,7 @@ import {
     constructor(private readonly articlesService: ArticlesService) {}
   
     @Post()
+    @UseGuards(JwtAuthGuard)
     @ApiCreatedResponse({ type: ArticleEntity })
     async create(@Body() createArticleDto: CreateArticleDto) {
       return new ArticleEntity(
@@ -27,6 +30,7 @@ import {
     }
   
     @Get()
+    @UseGuards(JwtAuthGuard)
     @ApiOkResponse({ type: ArticleEntity, isArray: true })
     async findAll() {
       const articles = await this.articlesService.findAll();
@@ -34,6 +38,7 @@ import {
     }
 
     @Get('latest')
+    @UseGuards(JwtAuthGuard)
     @ApiOkResponse({ type: ArticleEntity, isArray: true })
     async findFiveLatest() {
       const articles = await this.articlesService.findFiveLatest();
@@ -41,6 +46,7 @@ import {
     }
   
     @Get('drafts')
+    @UseGuards(JwtAuthGuard)
     @ApiOkResponse({ type: ArticleEntity, isArray: true })
     async findDrafts() {
       const drafts = await this.articlesService.findDrafts();
@@ -48,12 +54,14 @@ import {
     }
   
     @Get(':id')
+    @UseGuards(JwtAuthGuard)
     @ApiOkResponse({ type: ArticleEntity })
     async findOne(@Param('id') id: string) {
       return new ArticleEntity(await this.articlesService.findOne(id));
     }
   
     @Patch(':id')
+    @UseGuards(JwtAuthGuard)
     @ApiCreatedResponse({ type: ArticleEntity })
     async update(
       @Param('id') id: string,
@@ -65,6 +73,7 @@ import {
     }
   
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     @ApiOkResponse({ type: ArticleEntity })
     async remove(@Param('id') id: string) {
       return new ArticleEntity(await this.articlesService.remove(id));
